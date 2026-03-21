@@ -1,0 +1,13 @@
+images/*
+labels/*
+runs/*
+pre_model/*
+*.json
+*.png
+*.npy
+
+__pycache__
+*.log
+
+train.txt
+val.txt

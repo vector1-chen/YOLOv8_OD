@@ -1,0 +1,12 @@
+oil_drum
+shelf
+dynamite
+fire_extinguisher
+fire_hydrant
+first_aid_kit
+refrigerator
+human
+table
+trash_bin
+valve
+trash_can
