@@ -2,6 +2,8 @@ images/*
 labels/*
 runs/*
 pre_model/*
+data_video/*
+predict/*
 *.json
 *.png
 *.npy
@@ -11,3 +13,5 @@ __pycache__
 
 train.txt
 val.txt
+
+*.mp4

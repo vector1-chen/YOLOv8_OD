@@ -78,6 +78,11 @@ def parse_args():
         action="store_true",
         help="扫描 source-dir 中所有 JSON 文件，将 imagePath 字段修正为与 JSON 同名的图片文件名（用于修复已重命名但 JSON 内容未更新的情况）"
     )
+    parser.add_argument(
+        "--remove-unlabeled",
+        action="store_true",
+        help="打乱时仅保留有同名 JSON 的图片；原地模式和 move 模式下会删除无标注图片，copy 模式下仅跳过无标注图片"
+    )
     return parser.parse_args()
 
 
@@ -276,18 +281,6 @@ def main():
         print(f"[WARNING] 在 {source_dir} 中未找到任何支持的图片文件。")
         return 0
 
-    json_count = sum(1 for _, j in pairs if j is not None)
-    print(f"[INFO] 找到 {len(pairs)} 张图片（其中 {json_count} 张有同名 .json），源目录: {source_dir}")
-
-    # 打乱
-    if args.seed is not None:
-        random.seed(args.seed)
-        print(f"[INFO] 随机种子: {args.seed}")
-    else:
-        print("[INFO] 未指定随机种子，结果不可复现。")
-
-    random.shuffle(pairs)
-
     # 确定输出目录
     inplace = args.output_dir is None
     if inplace:
@@ -299,6 +292,45 @@ def main():
             output_dir.mkdir(parents=True, exist_ok=True)
         op = "复制" if args.copy else "移动"
         print(f"[INFO] 模式: {op} 到 {output_dir}")
+
+    # 可选：去除无标注图片（无同名 JSON）
+    if args.remove_unlabeled:
+        unlabeled_images = [img for img, js in pairs if js is None]
+        pairs = [(img, js) for img, js in pairs if js is not None]
+
+        if unlabeled_images:
+            if inplace or (not inplace and not args.copy):
+                if args.dry_run:
+                    for p in unlabeled_images:
+                        print(f"  [REMOVE-UNLABELED(dry-run)] {p}")
+                else:
+                    for p in unlabeled_images:
+                        try:
+                            p.unlink()
+                            print(f"  [REMOVE-UNLABELED] {p}")
+                        except Exception as e:
+                            print(f"  [WARNING] 删除失败: {p}  原因: {e}")
+            else:
+                print(
+                    f"[INFO] copy 模式下将跳过 {len(unlabeled_images)} 张无标注图片（不会删除源文件）"
+                )
+
+        if not pairs:
+            status = "（预览）" if args.dry_run else "（完成）"
+            print(f"[INFO] 去除无标注图片后没有可处理的带标注图片 {status}")
+            return 0
+
+    json_count = sum(1 for _, j in pairs if j is not None)
+    print(f"[INFO] 找到 {len(pairs)} 张图片（其中 {json_count} 张有同名 .json），源目录: {source_dir}")
+
+    # 打乱
+    if args.seed is not None:
+        random.seed(args.seed)
+        print(f"[INFO] 随机种子: {args.seed}")
+    else:
+        print("[INFO] 未指定随机种子，结果不可复现。")
+
+    random.shuffle(pairs)
 
     if args.dry_run:
         print("[INFO] *** DRY-RUN 模式，不会修改任何文件 ***\n")

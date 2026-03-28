@@ -2,12 +2,11 @@
 将数据集划分为 train / val 两部分，并在项目根目录生成对应的 txt 文件列表。
 默认比例：train 80%，val 20%（随机打乱后分配）。
 """
-import os
 import random
 from pathlib import Path
 
 # ─── 配置 ────────────────────────────────────────────────────────────────────
-ROOT_DIR   = Path(__file__).parent          # 项目根目录
+ROOT_DIR   = Path(__file__).resolve().parent.parent  # 项目根目录
 IMAGES_DIR = ROOT_DIR / "images"
 LABELS_DIR = ROOT_DIR / "labels"
 TRAIN_RATIO = 0.8                           # 训练集比例

@@ -1,7 +1,7 @@
 # YOLOv8 数据集配置文件
 # 运行前请先执行 python split_dataset.py 生成 train.txt / val.txt
 
-path: /home/bug/learn_ws/work_ws/yolo_seg   # 数据集根目录（绝对路径）
+path: /home/wangyifei/work_ws/cyf/YOLOv8_OD   # 数据集根目录（绝对路径）
 train: train.txt    # 训练集图片列表（相对于 path）
 val:   val.txt      # 验证集图片列表（相对于 path）
 
@@ -10,15 +10,15 @@ nc: 12
 
 # 类别名称（顺序必须与 labels/*.txt 中的索引一致）
 names:
-  0:  oil_drum
-  1:  shelf
-  2:  dynamite
-  3:  fire_extinguisher
-  4:  fire_hydrant
-  5:  first_aid_kit
-  6:  refrigerator
-  7:  human
-  8:  table
-  9:  trash_bin
-  10: valve
-  11: trash_can
+  0:  chair
+  1:  desk
+  2:  stool
+  3:  toolkit
+  4:  broom
+  5:  air_conditioner
+  6:  robot
+  7:  fire_extinguisher
+  8:  mask
+  9:  mattress
+  10: cone
+  11: shelf
