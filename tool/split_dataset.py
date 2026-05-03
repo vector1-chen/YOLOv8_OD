@@ -1,6 +1,7 @@
 """
 将数据集划分为 train / val 两部分，并在项目根目录生成对应的 txt 文件列表。
 默认比例：train 80%，val 20%（随机打乱后分配）。
+!!! 图片类型jpg或png自行修改，要求labels/中必须有对应的txt文件才会被划分。
 """
 import random
 from pathlib import Path
@@ -15,7 +16,7 @@ SEED        = 42                            # 随机种子，保证可复现
 
 def split_dataset():
     # 取所有在 labels/ 中存在对应 txt 的图片
-    image_paths = sorted(IMAGES_DIR.glob("*.png"))
+    image_paths = sorted(IMAGES_DIR.glob("*.jpg"))
     valid_pairs = [
         p for p in image_paths
         if (LABELS_DIR / (p.stem + ".txt")).exists()
