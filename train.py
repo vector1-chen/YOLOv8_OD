@@ -10,20 +10,20 @@ from ultralytics import YOLO
 from ultralytics.utils import USER_CONFIG_DIR
 
 # ─── 训练参数（根据需要修改）────────────────────────────────────────────────
-MODEL_WEIGHTS = str(Path(__file__).parent / "pre_model/yolov8s.pt")  # 本地权重
+MODEL_WEIGHTS = str(Path(__file__).parent / "pre_model/yolov8n.pt")  # 本地权重
 # 模型选择建议：样本量 ~2000 张，yolov8s 是精度与速度的较好平衡点
 # 若 mAP 不理想可升级为 yolov8m.pt；若追求推理速度可降为 yolov8n.pt
 
 DATA_YAML     = str(Path(__file__).parent / "dataset.yaml")
 EPOCHS        = 150              # 训练轮数
 
-IMGSZ         = 960              # 输入图像尺寸（与采集分辨率 640×480 匹配，无需修改）
-BATCH         = 32                # 批大小
+IMGSZ         = 1280              # 输入图像尺寸（与采集分辨率 640×480 匹配，无需修改）
+BATCH         = 4                # 批大小
 
-WORKERS       = 16                # 数据加载线程数（与 CPU 核心数匹配即可）
-PROJECT       = "runs/detect"    # 输出目录
-NAME          = "fire_01"        # 实验名称（每次重训改名，保留历史结果）
-DEVICE        = 1                # 0 = 第一块 GPU；"cpu" 使用 CPU 训练
+WORKERS       = 4                 # 数据加载线程数（与 CPU 核心数匹配即可）
+PROJECT       = str((Path(__file__).resolve().parent / "runs" / "detect").resolve())  # 输出目录（绝对路径，避免重复拼接）
+NAME          = "fire_02"        # 实验名称（每次重训改名，保留历史结果）
+DEVICE        = 0                # 0 = 第一块 GPU；"cpu" 使用 CPU 训练
 # ─────────────────────────────────────────────────────────────────────────────
 
 

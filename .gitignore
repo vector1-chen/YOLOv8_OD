@@ -15,3 +15,5 @@ train.txt
 val.txt
 
 *.mp4
+
+labels.cache
